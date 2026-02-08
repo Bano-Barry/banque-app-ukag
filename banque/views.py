@@ -27,10 +27,26 @@ def agences_list(request):
     return render(request, 'banque/agences_list.html', {'agences': agences})
 
 
+# def clients_list(request):
+#     """Liste de tous les clients"""
+#     clients = Client.objects.select_related('agence').all()
+#     return render(request, 'banque/clients_list.html', {'clients': clients})
+
 def clients_list(request):
-    """Liste de tous les clients"""
     clients = Client.objects.select_related('agence').all()
-    return render(request, 'banque/clients_list.html', {'clients': clients})
+
+    total_clients = clients.count()
+    avec_compte = clients.filter(compte__isnull=False).count()
+    sans_compte = clients.filter(compte__isnull=True).count()
+
+    context = {
+        'clients': clients,
+        'total_clients': total_clients,
+        'avec_compte': avec_compte,
+        'sans_compte': sans_compte,
+    }
+
+    return render(request, 'banque/clients_list.html', context)
 
 
 def comptes_list(request):
