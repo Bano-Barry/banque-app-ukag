@@ -1,5 +1,4 @@
-{% extends 'banque/base.html' %} {% block title %}Détails du Compte n°{{
-compte.code }} - Système Bancaire UKAG{% endblock %} {% block content %}
+{% extends 'banque/base.html' %} {% block title %}Détails du Compte n°{{compte.code }} - Système Bancaire UKAG{% endblock %} {% block content %}
 
 <!-- HEADER -->
 <div class="flex items-center justify-between mb-8">
@@ -341,8 +340,7 @@ compte.code }} - Système Bancaire UKAG{% endblock %} {% block content %}
           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
         ></path>
       </svg>
-      Historique des opérations ({{ operations|length }} dernière{{
-      operations|length|pluralize }})
+      Historique des opérations ({{ operations|length }} dernière{{ operations|length|pluralize }})
     </h3>
   </div>
 

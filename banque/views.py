@@ -1,6 +1,5 @@
-from django.shortcuts import render
-
 from django.shortcuts import render, redirect, get_object_or_404
+from  decimal import Decimal
 from django.contrib import messages
 from .models import Agence, Client, Compte, Operation
 
@@ -83,7 +82,7 @@ def depot(request):
     """Effectuer un dépôt"""
     if request.method == 'POST':
         compte_code = request.POST.get('compte')
-        montant = float(request.POST.get('montant'))
+        montant = Decimal(request.POST.get('montant'))
         
         try:
             compte = Compte.objects.get(code=compte_code)
@@ -102,7 +101,7 @@ def retrait(request):
     """Effectuer un retrait"""
     if request.method == 'POST':
         compte_code = request.POST.get('compte')
-        montant = float(request.POST.get('montant'))
+        montant = Decimal(request.POST.get('montant'))
         
         try:
             compte = Compte.objects.get(code=compte_code)
@@ -122,7 +121,7 @@ def virement(request):
     if request.method == 'POST':
         compte_source_code = request.POST.get('compte_source')
         compte_dest_code = request.POST.get('compte_dest')
-        montant = float(request.POST.get('montant'))
+        montant = Decimal(request.POST.get('montant'))
         
         try:
             compte_source = Compte.objects.get(code=compte_source_code)

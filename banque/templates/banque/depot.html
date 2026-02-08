@@ -1,0 +1,126 @@
+{% extends 'banque/base.html' %}
+
+{% block title %}Effectuer un Dépôt - Système Bancaire UKAG{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<div class="mb-8">
+    <a href="{% url 'operations' %}" class="inline-flex items-center text-green-600 hover:text-green-800 font-medium mb-4 transition">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Retour aux opérations
+    </a>
+    
+    <h1 class="text-4xl font-bold text-gray-900 flex items-center">
+        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+        </div>
+        Effectuer un Dépôt
+    </h1>
+    <p class="text-gray-600 mt-2 ml-20">Ajouter de l'argent sur un compte bancaire</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- FORMULAIRE -->
+    <div class="lg:col-span-2">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Sélection du compte -->
+                <div>
+                    <label for="compte" class="block text-sm font-bold text-gray-700 mb-2">
+                        Compte à créditer *
+                    </label>
+                    <select name="compte" id="compte" required class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition">
+                        <option value="">-- Sélectionnez un compte --</option>
+                        {% for compte in comptes %}
+                        <option value="{{ compte.code }}">
+                            Compte n°{{ compte.code }} - {{ compte.client.prenom }} {{ compte.client.nom }} ({{ compte.solde }} GNF)
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Montant -->
+                <div>
+                    <label for="montant" class="block text-sm font-bold text-gray-700 mb-2">
+                        Montant à déposer (GNF) *
+                    </label>
+                    <div class="relative">
+                        <input type="number" name="montant" id="montant" min="1" step="0.01" required 
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+                               placeholder="Ex: 50000">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                            <span class="text-gray-500 font-medium">GNF</span>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500">Entrez le montant que vous souhaitez déposer</p>
+                </div>
+                
+                <!-- Boutons -->
+                <div class="flex space-x-4 pt-4">
+                    <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg transition duration-300 flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Effectuer le dépôt
+                    </button>
+                    <a href="{% url 'operations' %}" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-4 px-6 rounded-lg transition duration-300 text-center">
+                        Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- INFORMATIONS -->
+    <div class="lg:col-span-1">
+        <div class="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-bold text-green-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Informations
+            </h3>
+            <ul class="space-y-3 text-green-800 text-sm">
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-green-600 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Le montant sera crédité instantanément</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-green-600 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Aucun montant minimum requis</span>
+                </li>
+                <li class="flex items-start">
+                    <svg class="w-5 h-5 text-green-600 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>L'opération sera tracée dans l'historique</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6">
+            <h3 class="text-lg font-bold text-yellow-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                Attention
+            </h3>
+            <p class="text-yellow-800 text-sm">
+                Pour les <strong>Comptes Payants</strong>, des frais de <strong>15 GNF</strong> seront automatiquement prélevés après le dépôt.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
