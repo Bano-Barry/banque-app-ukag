@@ -484,10 +484,7 @@ compte.code }} - Système Bancaire UKAG{% endblock %} {% block content %}
             <p
               class="text-lg font-bold {% if operation.type_operation == 'DEPOT' or operation.type_operation == 'VIREMENT_RECU' or operation.type_operation == 'CALCUL_INTERET' %}text-green-600{% elif operation.type_operation == 'RETRAIT' or operation.type_operation == 'VIREMENT_ENVOYE' or operation.type_operation == 'FRAIS' %}text-red-600{% else %}text-gray-600{% endif %}"
             >
-              {% if operation.type_operation == 'DEPOT' or
-              operation.type_operation == 'VIREMENT_RECU' or
-              operation.type_operation == 'CALCUL_INTERET' %}+{% else %}-{%
-              endif %}{{ operation.montant }} GNF
+              {% if operation.type_operation == 'DEPOT' or operation.type_operation == 'VIREMENT_RECU' or operation.type_operation == 'CALCUL_INTERET' %}+{% else %}-{%endif %}{{ operation.montant }} GNF
             </p>
             <p class="text-xs text-gray-500">
               Solde: {{ operation.solde_apres }} GNF
