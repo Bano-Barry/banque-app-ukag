@@ -1,0 +1,244 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Système Bancaire UKAG{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Configuration Tailwind personnalisée -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#2c3e50",
+              secondary: "#3498db",
+              success: "#27ae60",
+              danger: "#e74c3c",
+              warning: "#f39c12",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Icons (Heroicons via CDN) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@heroicons/heroicons@2.0.18/24/outline/index.css"
+    />
+
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body
+    class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen"
+  >
+    <!-- NAVBAR -->
+    <nav class="bg-primary shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <a
+              href="{% url 'home' %}"
+              class="flex items-center space-x-2 text-white text-xl font-bold hover:text-secondary transition"
+            >
+              <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                ></path>
+              </svg>
+              <span>Banque UKAG</span>
+            </a>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex items-center space-x-4">
+            <a
+              href="{% url 'home' %}"
+              class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition"
+            >
+              Accueil
+            </a>
+            <a
+              href="{% url 'agences_list' %}"
+              class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition"
+            >
+              Agences
+            </a>
+            <a
+              href="{% url 'clients_list' %}"
+              class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition"
+            >
+              Clients
+            </a>
+            <a
+              href="{% url 'comptes_list' %}"
+              class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition"
+            >
+              Comptes
+            </a>
+            <a
+              href="{% url 'operations' %}"
+              class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition"
+            >
+              Opérations
+            </a>
+            <a
+              href="/admin/"
+              target="_blank"
+              class="bg-secondary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition"
+            >
+              Admin
+            </a>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden flex items-center">
+            <button
+              type="button"
+              id="mobile-menu-button"
+              class="text-gray-200 hover:text-white focus:outline-none"
+            >
+              <svg
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <a
+            href="{% url 'home' %}"
+            class="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Accueil</a
+          >
+          <a
+            href="{% url 'agences_list' %}"
+            class="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Agences</a
+          >
+          <a
+            href="{% url 'clients_list' %}"
+            class="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Clients</a
+          >
+          <a
+            href="{% url 'comptes_list' %}"
+            class="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Comptes</a
+          >
+          <a
+            href="{% url 'operations' %}"
+            class="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Opérations</a
+          >
+          <a
+            href="/admin/"
+            target="_blank"
+            class="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Admin</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- MESSAGES -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+      {% for message in messages %}
+      <div
+        class="{% if message.tags == 'success' %}bg-green-100 border-l-4 border-green-500 text-green-700{% elif message.tags == 'error' %}bg-red-100 border-l-4 border-red-500 text-red-700{% elif message.tags == 'warning' %}bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700{% else %}bg-blue-100 border-l-4 border-blue-500 text-blue-700{% endif %} p-4 rounded-lg shadow-md mb-4 animate-pulse"
+        role="alert"
+      >
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <p class="font-medium">{{ message }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- CONTENU PRINCIPAL -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 animate-fadeIn">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-primary text-white mt-12 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-lg font-semibold">
+          &copy; 2025 Système Bancaire UKAG - Master 1 IASD
+        </p>
+        <p class="text-sm text-gray-300 mt-2">
+          Projet Génie Logiciel |
+          <a href="/admin/" class="text-secondary hover:text-white transition"
+            >Administration</a
+          >
+        </p>
+      </div>
+    </footer>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+      document
+        .getElementById("mobile-menu-button")
+        .addEventListener("click", function () {
+          var menu = document.getElementById("mobile-menu");
+          menu.classList.toggle("hidden");
+        });
+    </script>
+
+    <!-- Custom Animations -->
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out;
+      }
+    </style>
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>
